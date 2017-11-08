@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,8 @@ public class HistoryActivity extends AppCompatActivity {
       addNavDrawerItems();
       setupDrawer();
 
+      sessions = new ArrayList<Session>();
+
       for(int i = 0; i < 20; i++){
           sessions.add(new Session());
       }
@@ -57,6 +60,17 @@ public class HistoryActivity extends AppCompatActivity {
 
       sessionListView = (ListView) findViewById(R.id.list);
       adapter = new SessionAdapter(this, sessions);
+
+      sessionListView.setAdapter(adapter);
+
+       if (adapter.isEmpty()) {
+           TextView error = (TextView) findViewById(R.id.database_empty_text_view);
+           error.setVisibility(View.VISIBLE);
+       } else {
+           TextView error = (TextView) findViewById(R.id.database_empty_text_view);
+           error.setVisibility(View.GONE);
+       }
+
    }
 
    // Sync the Nav Drawer icon with the current activity

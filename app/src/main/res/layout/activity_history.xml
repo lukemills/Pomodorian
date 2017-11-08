@@ -7,10 +7,22 @@
     android:layout_height="match_parent">
 
     <!-- The main content view -->
-    <android.support.v4.view.ViewPager
+    <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/database_empty_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:layout_gravity="center_vertical"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/info_text"
+        android:visibility="gone"/>
+
 
     <!-- The navigation drawer -->
     <ListView
