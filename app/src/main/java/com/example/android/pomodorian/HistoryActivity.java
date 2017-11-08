@@ -56,9 +56,11 @@ public class HistoryActivity extends AppCompatActivity {
 
         sessions = dbHelper.populateListFromDB();
 
+        /*
         for (int i = 0; i < 20; i++) {
             sessions.add(new Session());
         }
+        */
 
 
         sessionListView = (ListView) findViewById(R.id.list);
