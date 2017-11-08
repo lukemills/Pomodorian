@@ -56,9 +56,6 @@ public class MainActivity extends Activity {
         status = 0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Set progress bar to initially depict 0 progres completed initially.
-        ProgressBar progress = (ProgressBar) findViewById(R.id.progress_bar);
-        progress.setProgress(0);
     }
 
     // The format to be used in the countdown timer
@@ -74,13 +71,12 @@ public class MainActivity extends Activity {
      * takes no inputs.
      */
     public void startTimer(View view){
-        // Obtain a reference to the timer TextView, toggle Button, statusText textView,
-        // streakCounterTextView TextView, and progress ProgressBar.
+        // Obtain a reference to the timer TextView, toggle Button, statusText textView, and
+        // streakCounterTextView TextView
         final TextView timer = (TextView) findViewById(R.id.timer_text_view);
         final Button toggle = (Button) findViewById(R.id.toggle_button);
         final TextView statusText = (TextView) findViewById(R.id.status_text_view);
         final TextView streakCounterTextView = (TextView) findViewById(R.id.streak_counter);
-        final ProgressBar progress = (ProgressBar) findViewById(R.id.progress_bar);
 
         // Update the streakCounterTextView to depict the most recent streak count
         streakCounterTextView.setText(Integer.toString(streakCounter));
@@ -91,17 +87,15 @@ public class MainActivity extends Activity {
         switch(status){
             // When status == 0, countdown timer has not been started; not currently in pomodoro session.
             // Since user pressed the button, he/she wants to start a session; hence a work period
-            // will begin. status, statusText, progress, and the toggle button are updated accordingly.
+            // will begin. status, statusText, and the toggle button are updated accordingly.
             case 0:
                 status = 1;
                 toggle.setText(getString(R.string.stop_literal));
                 statusText.setText(getString(R.string.work_status));
-                progress.setProgress(0);
                 // Initialize and start a countdown timer for the work period
                 workCountdown = new CountDownTimer(1500000, 1000) {
-                    //Perform an update to the timer TextView and progress ProgressBar on each tick
+                    //Perform an update to the timer TextView on each tick
                     public void onTick(long millisUntilFinished) {
-                        progress.incrementProgressBy(1);
                         timer.setText("" + String.format(FORMAT,
                                 TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
                                         TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
@@ -131,14 +125,11 @@ public class MainActivity extends Activity {
             // that he/she is ready to begin the break period, and thus the breakCountdown timer is started
             case 2:
                 status = 3;
-                progress.setProgress(0);
                 toggle.setText(getString(R.string.stop_literal));
                 statusText.setText(getString(R.string.relax_status));
                 breakCountdown = new CountDownTimer(30000, 1000) {
 
                     public void onTick(long millisUntilFinished) {
-                        // Increment progress by 5 since this timer is 1/5th as long as the work timer
-                        progress.incrementProgressBy(5);
                         timer.setText("" + String.format(FORMAT,
                                 TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
                                         TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
@@ -178,7 +169,6 @@ public class MainActivity extends Activity {
             case 5:
                 status = 1;
                 toggle.setText(R.string.stop_literal);
-                progress.setProgress(0);
                 streakCounter = 0;
                 streakCounterTextView.setText(Integer.toString(streakCounter));
                 statusText.setText(getString(R.string.work_status));
@@ -191,7 +181,6 @@ public class MainActivity extends Activity {
             // to the beginning of a work cycle; the difference being the lack of incrementing streakCounter.
             case 6:
                 status = 1;
-                progress.setProgress(0);
                 toggle.setText(getString(R.string.stop_literal));
                 statusText.setText(getString(R.string.work_status));
                 streakCounter = 0;
