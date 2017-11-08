@@ -12,6 +12,15 @@ public class Session {
     private int break_duration;
     private int streaks;
 
+    public Session(){
+        date = "09/20/2015";
+        time = "15000";
+        duration = 0;
+        work_duration = 0;
+        break_duration = 0;
+        streaks = 0;
+    }
+
     public String getDate() {
         return date;
     }

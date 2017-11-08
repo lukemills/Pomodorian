@@ -2,6 +2,7 @@ package com.example.android.pomodorian;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -14,12 +15,10 @@ public class PomodoroAppDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "sessions.db";
 
-    private Context mContext;
 
     // Constructor of the database; stores context for use in deletion of entire database
     public PomodoroAppDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, DATABASE_VERSION);
-        mContext = context;
     }
 
     // Create the database
@@ -53,32 +52,38 @@ public class PomodoroAppDBHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + PomodoroContract.PomodoroEntity.SESSIONS_TABLE_NAME;
 
     // addSession adds a new row to database for the given session.
-    public void addProduct(WorkSession session) {
+    public void addSession(Session session) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(InventoryEntity.COLUMN_NAME, product.getmName());
-        values.put(InventoryEntity.COLUMN_UPC, product.getmUPC());
-        values.put(InventoryEntity.COLUMN_DESCRIPTION, product.getmDescription());
-        values.put(InventoryEntity.COLUMN_RESTOCK, product.getmUPC());
-        values.put(InventoryEntity.COLUMN_IMAGE, image);
-        values.put(InventoryEntity.COLUMN_QUANTITY, product.getmQuantity());
-        values.put(InventoryEntity.COLUMN_UNITS, product.getmUnits());
-        values.put(InventoryEntity.COLUMN_APIID, product.getmApiId());
+        values.put(PomodoroContract.PomodoroEntity.COLUMN_TIME, session.getTime());
+        values.put(PomodoroContract.PomodoroEntity.COLUMN_DATE, session.getDate());
+        values.put(PomodoroContract.PomodoroEntity.COLUMN_DURATION, session.getDuration());
+        values.put(PomodoroContract.PomodoroEntity.COLUMN_WORK_DURATION, session.getWork_duration());
+        values.put(PomodoroContract.PomodoroEntity.COLUMN_BREAK_DURATION, session.getBreak_duration());
+        values.put(PomodoroContract.PomodoroEntity.COLUMN_STREAKS, session.getStreaks());
 
-        switch (table){
-            case 'i':
-                db.insert(InventoryEntity.IN_STOCK_TABLE_NAME, null, values);
-                break;
-            case 'o':
-                db.insert(InventoryEntity.OUT_STOCK_TABLE_NAME, null, values);
-                break;
-            case 's':
-                db.insert(InventoryEntity.SHOP_STOCK_TABLE_NAME, null, values);
-                break;
-            default:
-                break;
-        }
-        db.clos
-
-
+        db.insert(PomodoroContract.PomodoroEntity.SESSIONS_TABLE_NAME, null, values);
+        db.close();
     }
+
+    // Display data displays the entire database in a textView
+    public Cursor getCursorToDb() {
+        String query;
+        SQLiteDatabase db = getReadableDatabase();
+        query = "SELECT * FROM " + PomodoroContract.PomodoroEntity.SESSIONS_TABLE_NAME + " WHERE 1";
+        return db.rawQuery(query, null);
+    }
+
+    public Cursor getCursorOnQuery(String query){
+        SQLiteDatabase db = getReadableDatabase();
+        return db.rawQuery(query, null);
+    }
+
+    // deleteProduct deletes a given product (represented by its argument productName) from the database
+    public void deleteSession(int key) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM " + PomodoroContract.PomodoroEntity.SESSIONS_TABLE_NAME + " WHERE "
+                        + PomodoroContract.PomodoroEntity._ID + "=\"" + key + "\";");
+    }
+
+}

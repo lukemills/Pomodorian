@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#AFB42B</color>
     <color name="colorAccent">#009688</color>
     <color name="colorTimerBackground">#212121</color>
+    <color name="color_white">#FFFFFF</color>
     <color name="colorMainBackground">#616161</color>
 </resources>
