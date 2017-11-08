@@ -5,67 +5,78 @@ package com.example.android.pomodorian;
  */
 
 public class Session {
-    private String date;
-    private String time;
-    private int duration;
-    private int work_duration;
-    private int break_duration;
-    private int streaks;
+    private String mDate;
+    private String mTime;
+    private int mDuration;
+    private int mWordDuration;
+    private int mBreakDuration;
+    private int mStreaks;
+
+    public Session(String date, String time, int duration,
+                   int work_duration, int break_duration, int streaks){
+       mDate = date;
+       mTime = time;
+       mDuration = duration;
+       mWordDuration = work_duration;
+       mBreakDuration = break_duration;
+       mStreaks = streaks;
+    }
+
 
     public Session(){
-        date = "09/20/2015";
-        time = "15000";
-        duration = 0;
-        work_duration = 0;
-        break_duration = 0;
-        streaks = 0;
+        mDate = "09/20/2015";
+        mTime = "15000";
+        mDuration = 0;
+        mWordDuration = 0;
+        mBreakDuration = 0;
+        mStreaks = 0;
     }
 
     public String getDate() {
-        return date;
+        return mDate;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.mDate = date;
     }
 
     public String getTime() {
-        return time;
+        return mTime;
     }
 
     public void setTime(String time) {
-        this.time = time;
+        this.mTime = time;
     }
 
     public int getDuration() {
-        return duration;
+        return mDuration;
     }
 
     public void setDuration(int duration) {
-        this.duration = duration;
+        this.mDuration = duration;
     }
 
     public int getWork_duration() {
-        return work_duration;
+        return mWordDuration;
     }
 
     public void setWork_duration(int work_duration) {
-        this.work_duration = work_duration;
+        this.mWordDuration = work_duration;
     }
 
     public int getBreak_duration() {
-        return break_duration;
+        return mBreakDuration;
     }
 
     public void setBreak_duration(int break_duration) {
-        this.break_duration = break_duration;
+        this.mBreakDuration = break_duration;
     }
 
     public int getStreaks() {
-        return streaks;
+        return mStreaks;
     }
 
     public void setStreaks(int streaks) {
-        this.streaks = streaks;
+        this.mStreaks = streaks;
     }
 }

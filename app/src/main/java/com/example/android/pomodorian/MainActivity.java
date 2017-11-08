@@ -22,7 +22,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+
 import java.util.concurrent.TimeUnit;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
      * This method is triggered when the user clicks the toggle button. It returns no values and
      * takes no inputs.
      */
-    public void startTimer(View view){
+    public void startTimer(View view) {
         // Obtain a reference to the timer TextView, toggle Button, statusText textView, and
         // streakCounterTextView TextView
         final TextView timer = (TextView) findViewById(R.id.timer_text_view);
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         // When the toggle button is pressed, an action will be performed based on the value of "status"
         // This switch statements handles the logic in order to perform the appropriate action.
-        switch(status){
+        switch (status) {
             // When status == 0, countdown timer has not been started; not currently in pomodoro session.
             // Since user pressed the button, he/she wants to start a session; hence a work period
             // will begin. status, statusText, and the toggle button are updated accordingly.
@@ -229,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setupDrawer(){
+    private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.string.drawer_open, R.string.drawer_close) {
 
@@ -251,7 +253,8 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
     }
-    private void addNavDrawerItems(){
+
+    private void addNavDrawerItems() {
         // ArrayAdapter to be used with the Navigation Drawer
         ArrayAdapter<String> mAdapter;
         final String[] activitiesArray = {getString(R.string.session), getString(R.string.history)};
@@ -261,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String activity = activitiesArray[position];
-                if(position == 1){
+                if (position == 1) {
                     Intent historyIntent = new Intent(MainActivity.this, HistoryActivity.class);
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     startActivity(historyIntent);

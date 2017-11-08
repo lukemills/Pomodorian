@@ -22,100 +22,104 @@ import java.util.ArrayList;
 
 public class HistoryActivity extends AppCompatActivity {
 
-   // ListView to be used with the Navigation Drawer
-   private ListView mDrawerList;
-   private DrawerLayout mDrawerLayout;
-   private String mActivityTitle;
-   private ActionBarDrawerToggle mDrawerToggle;
-   private ArrayList<Session> sessions;
-   ListView sessionListView;
-   SessionAdapter adapter;
+    // ListView to be used with the Navigation Drawer
+    private ListView mDrawerList;
+    private DrawerLayout mDrawerLayout;
+    private String mActivityTitle;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private ArrayList<Session> sessions;
+    ListView sessionListView;
+    SessionAdapter adapter;
+    PomodoroAppDBHelper dbHelper;
 
-   @Override
-   public void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_history);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_history);
 
-      // Instantiate the Navigation Drawer
-      mDrawerList = (ListView) findViewById(R.id.navList);
+        // Instantiate the Navigation Drawer
+        mDrawerList = (ListView) findViewById(R.id.navList);
 
-      // Show the toggle for the Navigation drawer
-      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-      getSupportActionBar().setHomeButtonEnabled(true);
+        // Show the toggle for the Navigation drawer
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-      // Get reference to the drawer layout and current activity
-      mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-      mActivityTitle = getTitle().toString();
+        // Get reference to the drawer layout and current activity
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mActivityTitle = getTitle().toString();
 
-      // Instantiate the entries in the nav drawer
-      addNavDrawerItems();
-      setupDrawer();
+        // Instantiate the entries in the nav drawer
+        addNavDrawerItems();
+        setupDrawer();
 
-      sessions = new ArrayList<Session>();
+        dbHelper = new PomodoroAppDBHelper(this, "pomodorian", null, 1);
 
-      for(int i = 0; i < 20; i++){
-          sessions.add(new Session());
-      }
+        sessions = dbHelper.populateListFromDB();
+
+        for (int i = 0; i < 20; i++) {
+            sessions.add(new Session());
+        }
 
 
-      sessionListView = (ListView) findViewById(R.id.list);
-      adapter = new SessionAdapter(this, sessions);
+        sessionListView = (ListView) findViewById(R.id.list);
+        adapter = new SessionAdapter(this, sessions);
 
-      sessionListView.setAdapter(adapter);
+        sessionListView.setAdapter(adapter);
 
-       if (adapter.isEmpty()) {
-           TextView error = (TextView) findViewById(R.id.database_empty_text_view);
-           error.setVisibility(View.VISIBLE);
-       } else {
-           TextView error = (TextView) findViewById(R.id.database_empty_text_view);
-           error.setVisibility(View.GONE);
-       }
+        if (adapter.isEmpty()) {
+            TextView error = (TextView) findViewById(R.id.database_empty_text_view);
+            error.setVisibility(View.VISIBLE);
+        } else {
+            TextView error = (TextView) findViewById(R.id.database_empty_text_view);
+            error.setVisibility(View.GONE);
+        }
 
-   }
+    }
 
-   // Sync the Nav Drawer icon with the current activity
-   @Override
-   protected void onPostCreate(Bundle savedInstanceState) {
-      super.onPostCreate(savedInstanceState);
-      mDrawerToggle.syncState();
-   }
+    // Sync the Nav Drawer icon with the current activity
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
 
-   private void setupDrawer(){
-      mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-              R.string.drawer_open, R.string.drawer_close) {
+    private void setupDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close) {
 
-         /** Called when a drawer has settled in a completely open state. */
-         public void onDrawerOpened(View drawerView) {
-            super.onDrawerOpened(drawerView);
-            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-         }
-
-         /** Called when a drawer has settled in a completely closed state. */
-         public void onDrawerClosed(View view) {
-            super.onDrawerClosed(view);
-            getSupportActionBar().setTitle(mActivityTitle);
-            invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-         }
-      };
-
-      mDrawerToggle.setDrawerIndicatorEnabled(true);
-      mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-   }
-   private void addNavDrawerItems(){
-      // ArrayAdapter to be used with the Navigation Drawer
-      ArrayAdapter<String> mAdapter;
-      final String[] activitiesArray = {getString(R.string.session), getString(R.string.history)};
-      mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, activitiesArray);
-      mDrawerList.setAdapter(mAdapter);
-      mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-         @Override
-         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String activity = activitiesArray[position];
-            if(position == 0){
-               finish();
-               // Intent historyIntent = new Intent(MainActivity.this, HistoryActivity.class);
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+    }
+
+    private void addNavDrawerItems() {
+        // ArrayAdapter to be used with the Navigation Drawer
+        ArrayAdapter<String> mAdapter;
+        final String[] activitiesArray = {getString(R.string.session), getString(R.string.history)};
+        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, activitiesArray);
+        mDrawerList.setAdapter(mAdapter);
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String activity = activitiesArray[position];
+                if (position == 0) {
+                    finish();
+                    // Intent historyIntent = new Intent(MainActivity.this, HistoryActivity.class);
+                }
                 /*
                 if (position == 0 && (!parentList.equals(listNames.get(0)))) {
                     // Open an intent to the first list
@@ -126,37 +130,37 @@ public class HistoryActivity extends AppCompatActivity {
                     startActivity(list1Intent);
                 }
                 */
-         }
-      });
-   }
+            }
+        });
+    }
 
-   @Override
-   public boolean onOptionsItemSelected(MenuItem item) {
-      // Handle action bar item click
-      int id = item.getItemId();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item click
+        int id = item.getItemId();
 
-      if (id == R.id.action_settings) {
-         return true;
-      }
-      // Activate the navigation drawer toggle
-      if (mDrawerToggle.onOptionsItemSelected(item)) {
-         return true;
-      }
-      return super.onOptionsItemSelected(item);
-   }
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        // Activate the navigation drawer toggle
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-   @Override
-   public void onConfigurationChanged(Configuration newConfig) {
-      super.onConfigurationChanged(newConfig);
-      mDrawerToggle.onConfigurationChanged(newConfig);
-   }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
 
-   @Override
-   public void onBackPressed() {
-      if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-         this.mDrawerLayout.closeDrawer(GravityCompat.START);
-      } else {
-         super.onBackPressed();
-      }
-   }
+    @Override
+    public void onBackPressed() {
+        if (this.mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

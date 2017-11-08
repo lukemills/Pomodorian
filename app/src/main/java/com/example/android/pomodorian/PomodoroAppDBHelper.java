@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by lukem on 11/8/2017.
  */
@@ -74,7 +76,7 @@ public class PomodoroAppDBHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public Cursor getCursorOnQuery(String query){
+    public Cursor getCursorOnQuery(String query) {
         SQLiteDatabase db = getReadableDatabase();
         return db.rawQuery(query, null);
     }
@@ -83,7 +85,37 @@ public class PomodoroAppDBHelper extends SQLiteOpenHelper {
     public void deleteSession(int key) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + PomodoroContract.PomodoroEntity.SESSIONS_TABLE_NAME + " WHERE "
-                        + PomodoroContract.PomodoroEntity._ID + "=\"" + key + "\";");
+                + PomodoroContract.PomodoroEntity._ID + "=\"" + key + "\";");
+    }
+
+    public ArrayList<Session> populateListFromDB() {
+        int dateCol, timeCol, durCol, workDurCol, breakDurCol, streakCol;
+        Cursor iter = getCursorToDb();
+        ArrayList<Session> sessionsList = new ArrayList<>();
+        try {
+            iter.moveToFirst();
+            while (!iter.isAfterLast()) {
+                dateCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_DATE);
+                timeCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_TIME);
+                durCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_DURATION);
+                workDurCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_WORK_DURATION);
+                breakDurCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_BREAK_DURATION);
+                streakCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_STREAKS);
+                sessionsList.add(new Session(
+                                iter.getString(dateCol),
+                                iter.getString(timeCol),
+                                iter.getInt(durCol),
+                                iter.getInt(workDurCol),
+                                iter.getInt(breakDurCol),
+                                iter.getInt(streakCol)
+                        )
+                );
+                iter.moveToNext();
+            }
+        } finally {
+            iter.close();
+        }
+        return sessionsList;
     }
 
 }
