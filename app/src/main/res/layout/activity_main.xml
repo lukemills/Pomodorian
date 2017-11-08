@@ -33,12 +33,24 @@
             android:textColor="@color/colorPrimary"
             android:textSize="96sp" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <Button
             android:id="@+id/toggle_button"
             style="@style/ButtonStyle"
             android:layout_marginTop="24dp"
             android:onClick="startTimer"
             android:text="@string/begin_literal" />
+
+            <Button
+                android:id="@+id/save_button"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="24dp"
+                android:text="@string/save_literal" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
