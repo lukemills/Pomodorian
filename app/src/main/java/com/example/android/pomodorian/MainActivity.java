@@ -27,6 +27,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
@@ -45,7 +47,6 @@ import org.w3c.dom.Text;
 
 // The main activity for the Pomodorian App
 public class MainActivity extends AppCompatActivity {
-
 
     /* status is an integer signifying the status of the countdown timer. It can have one of the
        following six values:
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
+    private PomodoroAppDBHelper dbHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
+        dbHelper = new PomodoroAppDBHelper(this, "pomodorian", null, 1);
+
         // Instantiate the entries in the nav drawer
         addNavDrawerItems();
         setupDrawer();
@@ -104,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
 
     // The format to be used in the countdown timer
     private static final String FORMAT = "%02d:%02d";
+
+    public void destroyDB(){
+        dbHelper.deleteAll();
+    }
 
     /*
      * This method handles the logic for starting/stopping the timer as controlled by the button
@@ -164,7 +172,6 @@ public class MainActivity extends AppCompatActivity {
                 status = 5;
                 toggle.setText(getString(R.string.reset_literal));
                 statusText.setText(getString(R.string.stopped_literal));
-                Toast.makeText(MainActivity.this, "stopped timer", Toast.LENGTH_SHORT).show();
 
                 new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.save_session))
@@ -172,7 +179,22 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.save_literal, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(MainActivity.this, "Session saved", Toast.LENGTH_SHORT).show();
+                            Session sesh = new Session(
+                                    new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime()),
+                                    new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()),
+                                    (25*streakCounter+5*streakCounter),
+                                    (25*streakCounter),
+                                    (5*streakCounter),
+                                    streakCounter
+                            );
+                            dbHelper.addSession(sesh);
+
+                            Toast.makeText(MainActivity.this,
+                                    "Session saved; streaks: "+Integer.toString(streakCounter) +
+                                            " date " + new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime())
+                                    +" time: "
+                                    + new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime())
+                                    , Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeButton(R.string.dont_save_literal, new DialogInterface.OnClickListener() {
@@ -225,6 +247,16 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton(R.string.save_literal, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                Session sesh = new Session(
+                                        new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()),
+                                        new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()),
+                                        (25*streakCounter+5*streakCounter),
+                                        (25*streakCounter),
+                                        (5*streakCounter),
+                                        streakCounter
+                                );
+                                dbHelper.addSession(sesh);
+
                                 Toast.makeText(MainActivity.this, "Session saved", Toast.LENGTH_SHORT).show();
                             }
                         })

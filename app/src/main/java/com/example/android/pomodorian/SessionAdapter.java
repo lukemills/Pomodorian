@@ -40,7 +40,7 @@ public class SessionAdapter extends ArrayAdapter<Session> {
         // Get the product name from the currentProduct object and set this text on
         // the name TextView.
         // productNameTextView.setText(currentSession.getDate());
-        productNameTextView.setText("09/20/1995");
+        productNameTextView.setText(currentSession.getDate());
         return listItemView;
     }
 }

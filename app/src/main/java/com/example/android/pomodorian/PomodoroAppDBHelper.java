@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,11 @@ public class PomodoroAppDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES_SESSIONS);
         onCreate(db);
+    }
+
+    public void deleteAll(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM " + PomodoroContract.PomodoroEntity.SESSIONS_TABLE_NAME);
     }
 
 
@@ -89,7 +95,7 @@ public class PomodoroAppDBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Session> populateListFromDB() {
-        int dateCol, timeCol, durCol, workDurCol, breakDurCol, streakCol;
+        int dateCol, timeCol, durCol, workDurCol, breakDurCol, streakCol, keyCol;
         Cursor iter = getCursorToDb();
         ArrayList<Session> sessionsList = new ArrayList<>();
         try {
@@ -101,13 +107,15 @@ public class PomodoroAppDBHelper extends SQLiteOpenHelper {
                 workDurCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_WORK_DURATION);
                 breakDurCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_BREAK_DURATION);
                 streakCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity.COLUMN_STREAKS);
+                keyCol = iter.getColumnIndex(PomodoroContract.PomodoroEntity._ID);
                 sessionsList.add(new Session(
                                 iter.getString(dateCol),
                                 iter.getString(timeCol),
                                 iter.getInt(durCol),
                                 iter.getInt(workDurCol),
                                 iter.getInt(breakDurCol),
-                                iter.getInt(streakCol)
+                                iter.getInt(streakCol),
+                                iter.getInt(keyCol)
                         )
                 );
                 iter.moveToNext();

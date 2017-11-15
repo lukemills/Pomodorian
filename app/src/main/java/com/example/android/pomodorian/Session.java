@@ -11,6 +11,7 @@ public class Session {
     private int mWordDuration;
     private int mBreakDuration;
     private int mStreaks;
+    private int mKey;
 
     public Session(String date, String time, int duration,
                    int work_duration, int break_duration, int streaks){
@@ -22,14 +23,15 @@ public class Session {
        mStreaks = streaks;
     }
 
-
-    public Session(){
-        mDate = "09/20/2015";
-        mTime = "15000";
-        mDuration = 0;
-        mWordDuration = 0;
-        mBreakDuration = 0;
-        mStreaks = 0;
+    public Session(String date, String time, int duration,
+                   int work_duration, int break_duration, int streaks, int key){
+        mDate = date;
+        mTime = time;
+        mDuration = duration;
+        mWordDuration = work_duration;
+        mBreakDuration = break_duration;
+        mStreaks = streaks;
+        mKey = key;
     }
 
     public String getDate() {
@@ -79,4 +81,8 @@ public class Session {
     public void setStreaks(int streaks) {
         this.mStreaks = streaks;
     }
+
+    public int getKet(){return mKey;}
+
+    public void setKey(int key){mKey = key;}
 }
