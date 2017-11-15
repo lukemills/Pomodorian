@@ -16,6 +16,10 @@ import android.app.Activity;
  */
 
 // Dependencies
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.view.GravityCompat;
@@ -35,11 +39,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 // The main activity for the Pomodorian App
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SaveSessionDialogFragment.SaveSessionDialogListener {
+
+    public void showSaveSessoinDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new SaveSessionDialogFragment();
+        dialog.show(this.getFragmentManager(), "SaveSessionDialogFragment");
+    }
+
+    public void onDialogPositiveClick(DialogFragment dialog){
+
+    }
+
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
+    }
 
     /* status is an integer signifying the status of the countdown timer. It can have one of the
        following six values:
@@ -157,6 +176,8 @@ public class MainActivity extends AppCompatActivity {
                 status = 5;
                 toggle.setText(getString(R.string.reset_literal));
                 statusText.setText(getString(R.string.stopped_literal));
+                Toast.makeText(MainActivity.this, "stopped timer", Toast.LENGTH_SHORT).show();
+                DialogFragment saveSessionConfirm = new SaveSessionDialogFragment();
                 workCountdown.cancel();
                 break;
             // When status == 2, the work session has ended and the app prompts for the user to confirm
@@ -313,5 +334,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
 }
+
