@@ -19,6 +19,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="info_text">No recorded sessions. Get started by beginning a session and hitting save!</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="save_session">Save Session?</string>
     <string name="save_literal">Save</string>
     <string name="dont_save_literal">Don\'t Save</string>
     <string name="session_name_literal">Session Name</string>

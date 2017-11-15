@@ -44,21 +44,8 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 // The main activity for the Pomodorian App
-public class MainActivity extends AppCompatActivity implements SaveSessionDialogFragment.SaveSessionDialogListener {
+public class MainActivity extends AppCompatActivity {
 
-    public void showSaveSessoinDialog() {
-        // Create an instance of the dialog fragment and show it
-        DialogFragment dialog = new SaveSessionDialogFragment();
-        dialog.show(this.getFragmentManager(), "SaveSessionDialogFragment");
-    }
-
-    public void onDialogPositiveClick(DialogFragment dialog){
-
-    }
-
-    public void onDialogNegativeClick(DialogFragment dialog) {
-
-    }
 
     /* status is an integer signifying the status of the countdown timer. It can have one of the
        following six values:
@@ -137,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements SaveSessionDialog
 
         // Update the streakCounterTextView to depict the most recent streak count
         streakCounterTextView.setText(Integer.toString(streakCounter));
+        DialogFragment saveSessionFragment;
 
 
         // When the toggle button is pressed, an action will be performed based on the value of "status"
@@ -177,7 +165,23 @@ public class MainActivity extends AppCompatActivity implements SaveSessionDialog
                 toggle.setText(getString(R.string.reset_literal));
                 statusText.setText(getString(R.string.stopped_literal));
                 Toast.makeText(MainActivity.this, "stopped timer", Toast.LENGTH_SHORT).show();
-                DialogFragment saveSessionConfirm = new SaveSessionDialogFragment();
+
+                new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.save_session))
+                    .setMessage("Would you like to save this session?")
+                    .setPositiveButton(R.string.save_literal, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(MainActivity.this, "Session saved", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton(R.string.dont_save_literal, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(MainActivity.this, "Session not saved", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .show();
                 workCountdown.cancel();
                 break;
             // When status == 2, the work session has ended and the app prompts for the user to confirm
@@ -215,6 +219,22 @@ public class MainActivity extends AppCompatActivity implements SaveSessionDialog
             // When status == 3, the user is in the break period (breakCountdown timer started),
             // and when the button is pressed, the user wants to stop this countdown.
             case 3:
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.save_session))
+                        .setMessage("Would you like to save this session?")
+                        .setPositiveButton(R.string.save_literal, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(MainActivity.this, "Session saved", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(R.string.dont_save_literal, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(MainActivity.this, "Session not saved", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
                 breakCountdown.cancel();
                 status = 6;
                 toggle.setText(getString(R.string.reset_literal));
