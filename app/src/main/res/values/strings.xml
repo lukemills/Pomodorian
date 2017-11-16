@@ -14,6 +14,12 @@
     <string name="relax_status">Relaxing</string>
     <string name="stopped_literal">Stopped</string>
     <string name="streak_literal">Streak:</string>
+    <string name="streaks_literal">Streaks:</string>
+    <string name="streaks_literal_lowercase">streaks</string>
+    <string name="minutes">minutes</string>
+    <string name="duration_literal">Total Duration:</string>
+    <string name="streaks_list_placeholder">0</string>
+    <string name="duration_list_placeholder">0</string>
     <string name="session">Pomodoro Home</string>
     <string name="history">History</string>
     <string name="drawer_open">Open navigation drawer</string>
