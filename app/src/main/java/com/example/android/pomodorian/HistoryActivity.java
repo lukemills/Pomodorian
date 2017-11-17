@@ -58,6 +58,7 @@ public class HistoryActivity extends AppCompatActivity {
         dbHelper = new PomodoroAppDBHelper(this, "pomodorian", null, 1);
 
         sessions = dbHelper.populateListFromDB();
+        dbHelper.close();
 
         sessionListView = (ListView) findViewById(R.id.list);
         adapter = new SessionAdapter(this, sessions);
@@ -74,20 +75,24 @@ public class HistoryActivity extends AppCompatActivity {
 
         sessionListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l){
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l){
                 new AlertDialog.Builder(HistoryActivity.this)
                         .setTitle(getString(R.string.delete_session))
                         .setMessage("Delete this session?")
                         .setPositiveButton(R.string.delete_literal, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(HistoryActivity.this, "Foo", Toast.LENGTH_SHORT).show();
+                                dbHelper = new PomodoroAppDBHelper(HistoryActivity.this, "pomodorian", null, 1);
+                                dbHelper.deleteSession(sessions.get(position).getKey());
+                                Toast.makeText(HistoryActivity.this, "Session deleted", Toast.LENGTH_SHORT).show();
+                                refresh(dbHelper);
+                                dbHelper.close();
                             }
                         })
                         .setNegativeButton(R.string.dont_delete_literal, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(HistoryActivity.this, "Bar", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(HistoryActivity.this, "Session not deleted", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .show();
@@ -182,6 +187,25 @@ public class HistoryActivity extends AppCompatActivity {
             this.mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void refresh(PomodoroAppDBHelper dbHelper){
+        adapter.clear();
+        sessions.clear();
+        sessions = dbHelper.populateListFromDB();
+        adapter = new SessionAdapter(this, sessions);
+        sessionListView.setAdapter(adapter);
+        if(adapter.isEmpty()){
+            TextView error = (TextView) findViewById(R.id.database_empty_text_view);
+            if(error != null) {
+                error.setVisibility(View.VISIBLE);
+            }
+        } else {
+            TextView error = (TextView) findViewById(R.id.database_empty_text_view);
+            if(error != null) {
+                error.setVisibility(View.GONE);
+            }
         }
     }
 }

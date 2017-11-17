@@ -82,7 +82,7 @@ public class Session {
         this.mStreaks = streaks;
     }
 
-    public int getKet(){return mKey;}
+    public int getKey(){return mKey;}
 
     public void setKey(int key){mKey = key;}
 }

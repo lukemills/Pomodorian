@@ -36,12 +36,14 @@ public class SessionAdapter extends ArrayAdapter<Session> {
         final Session currentSession = getItem(position);
 
         TextView sessionDateTextView = (TextView) listItemView.findViewById(R.id.session_date);
+        TextView sessionTimeTextView = (TextView) listItemView.findViewById(R.id.session_time);
         TextView streaksTextView = (TextView) listItemView.findViewById(R.id.streaks_list);
         TextView durationTextView = (TextView) listItemView.findViewById(R.id.duration_list);
 
         sessionDateTextView.setText(currentSession.getDate());
         streaksTextView.setText(String.valueOf(currentSession.getStreaks()));
         durationTextView.setText(String.valueOf(currentSession.getDuration()));
+        sessionTimeTextView.setText(currentSession.getTime());
 
         return listItemView;
     }
