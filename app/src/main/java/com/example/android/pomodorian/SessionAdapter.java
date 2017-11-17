@@ -42,7 +42,7 @@ public class SessionAdapter extends ArrayAdapter<Session> {
 
         sessionDateTextView.setText(currentSession.getDate());
         streaksTextView.setText(String.valueOf(currentSession.getStreaks()));
-        durationTextView.setText(String.valueOf(currentSession.getDuration()));
+        durationTextView.setText(String.valueOf(currentSession.getDurationInMinutes()));
         sessionTimeTextView.setText(currentSession.getTime());
 
         return listItemView;

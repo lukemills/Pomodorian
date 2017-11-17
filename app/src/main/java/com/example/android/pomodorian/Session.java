@@ -7,13 +7,13 @@ package com.example.android.pomodorian;
 public class Session {
     private String mDate;
     private String mTime;
-    private int mDuration;
+    private long mDuration;
     private int mWordDuration;
     private int mBreakDuration;
     private int mStreaks;
     private int mKey;
 
-    public Session(String date, String time, int duration,
+    public Session(String date, String time, long duration,
                    int work_duration, int break_duration, int streaks){
        mDate = date;
        mTime = time;
@@ -50,8 +50,16 @@ public class Session {
         this.mTime = time;
     }
 
-    public int getDuration() {
+    public long getDuration() {
         return mDuration;
+    }
+
+    public long getDurationInMinutes() {
+        return mDuration/1000/60;
+    }
+
+    public long getDurationInSeconds() {
+        return mDuration/1000/60;
     }
 
     public void setDuration(int duration) {

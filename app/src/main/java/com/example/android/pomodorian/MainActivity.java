@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private PomodoroAppDBHelper dbHelper;
+    private long startTime;
+    private long finishTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -142,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             // Since user pressed the button, he/she wants to start a session; hence a work period
             // will begin. status, statusText, and the toggle button are updated accordingly.
             case 0:
+                startTime = Calendar.getInstance().getTimeInMillis();
                 status = 1;
                 toggle.setText(getString(R.string.stop_literal));
                 statusText.setText(getString(R.string.work_status));
@@ -172,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 status = 5;
                 toggle.setText(getString(R.string.reset_literal));
                 statusText.setText(getString(R.string.stopped_literal));
+                finishTime = Calendar.getInstance().getTimeInMillis();
 
                 new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.save_session))
@@ -182,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                             Session sesh = new Session(
                                     new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime()),
                                     new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()),
-                                    (25*streakCounter+5*streakCounter),
+                                    (finishTime - startTime),
                                     (25*streakCounter),
                                     (5*streakCounter),
                                     streakCounter
