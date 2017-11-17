@@ -35,12 +35,14 @@ public class SessionAdapter extends ArrayAdapter<Session> {
         // Get the Product object located at this position in the list
         final Session currentSession = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID product_name_list
-        TextView productNameTextView = (TextView) listItemView.findViewById(R.id.session_date);
-        // Get the product name from the currentProduct object and set this text on
-        // the name TextView.
-        // productNameTextView.setText(currentSession.getDate());
-        productNameTextView.setText(currentSession.getDate());
+        TextView sessionDateTextView = (TextView) listItemView.findViewById(R.id.session_date);
+        TextView streaksTextView = (TextView) listItemView.findViewById(R.id.streaks_list);
+        TextView durationTextView = (TextView) listItemView.findViewById(R.id.duration_list);
+
+        sessionDateTextView.setText(currentSession.getDate());
+        streaksTextView.setText(String.valueOf(currentSession.getStreaks()));
+        durationTextView.setText(String.valueOf(currentSession.getDuration()));
+
         return listItemView;
     }
 }
