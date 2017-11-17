@@ -1,5 +1,7 @@
 package com.example.android.pomodorian;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -56,13 +59,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         sessions = dbHelper.populateListFromDB();
 
-        /*
-        for (int i = 0; i < 20; i++) {
-            sessions.add(new Session());
-        }
-        */
-
-
         sessionListView = (ListView) findViewById(R.id.list);
         adapter = new SessionAdapter(this, sessions);
 
@@ -75,6 +71,29 @@ public class HistoryActivity extends AppCompatActivity {
             TextView error = (TextView) findViewById(R.id.database_empty_text_view);
             error.setVisibility(View.GONE);
         }
+
+        sessionListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l){
+                new AlertDialog.Builder(HistoryActivity.this)
+                        .setTitle(getString(R.string.delete_session))
+                        .setMessage("Delete this session?")
+                        .setPositiveButton(R.string.delete_literal, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(HistoryActivity.this, "Foo", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(R.string.dont_delete_literal, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(HistoryActivity.this, "Bar", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+                return true;
+            }
+        });
 
     }
 
