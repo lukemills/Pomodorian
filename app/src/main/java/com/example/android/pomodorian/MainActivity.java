@@ -17,8 +17,6 @@ import android.app.Activity;
 
 // Dependencies
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,14 +24,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,8 +39,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 // The main activity for the Pomodorian App
 public class MainActivity extends AppCompatActivity {
@@ -86,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
         // Instantiate the Navigation Drawer
         mDrawerList = (ListView) findViewById(R.id.navList);
 
+        Toolbar mainToolBar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(mainToolBar);
+
         // Show the toggle for the Navigation drawer
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -101,6 +99,13 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_toolbar, menu);
+        return true;
+    }
+
     // Sync the Nav Drawer icon with the current activity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -110,10 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
     // The format to be used in the countdown timer
     private static final String FORMAT = "%02d:%02d";
-
-    public void destroyDB(){
-        dbHelper.deleteAll();
-    }
 
     /*
      * This method handles the logic for starting/stopping the timer as controlled by the button
@@ -134,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Update the streakCounterTextView to depict the most recent streak count
         streakCounterTextView.setText(Integer.toString(streakCounter));
-        DialogFragment saveSessionFragment;
-
 
         // When the toggle button is pressed, an action will be performed based on the value of "status"
         // This switch statements handles the logic in order to perform the appropriate action.
