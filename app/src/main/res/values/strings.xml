@@ -17,6 +17,11 @@
     <string name="streaks_literal">Streaks:</string>
     <string name="streaks_literal_lowercase">streaks</string>
     <string name="minutes">minutes</string>
+    <string name="Minutes">Minutes:</string>
+    <string name="Seconds">Seconds:</string>
+    <string name="edit_work">Edit work duration</string>
+    <string name="edit_break">Edit break duration</string>
+    <string name="edit">Edit session durations</string>
     <string name="duration_literal">Total Duration:</string>
     <string name="streaks_list_placeholder">0</string>
     <string name="session_time_placeholder">Nil</string>

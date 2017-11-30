@@ -12,7 +12,7 @@ import android.app.Activity;
  *      - Cycle: The time including both the work and break periods
  *          i.e. The total 30 minute time consisting of a work/break pair
  *      - Session: A unbound (by the program) time in which the user completes many cycles
-  *         e.g. An 8 hour pomodoro session would conists of many cycles and result in much progress!
+  *         e.g. An 8 hour pomodoro session would consists of many cycles and result in much progress!
  */
 
 // Dependencies
@@ -42,6 +42,10 @@ import android.widget.Toast;
 
 // The main activity for the Pomodorian App
 public class MainActivity extends AppCompatActivity {
+
+    static final int EDIT_TIMES = 1;
+
+    int duration = 1500000;
 
     /* status is an integer signifying the status of the countdown timer. It can have one of the
        following six values:
@@ -148,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 toggle.setText(getString(R.string.stop_literal));
                 statusText.setText(getString(R.string.work_status));
                 // Initialize and start a countdown timer for the work period
-                workCountdown = new CountDownTimer(1500000, 1000) {
+                workCountdown = new CountDownTimer(duration, 1000) {
                     //Perform an update to the timer TextView on each tick
                     public void onTick(long millisUntilFinished) {
                         timer.setText("" + String.format(FORMAT,
@@ -364,14 +368,26 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item click
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.edit) {
+            Intent settingsIntent = new Intent(MainActivity.this, EditSession.class);
+            startActivityForResult(settingsIntent, EDIT_TIMES);
             return true;
         }
         // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
+        else {
+            return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == EDIT_TIMES){
+            if(resultCode == RESULT_OK){
+                Toast.makeText(MainActivity.this, "Returned from settings", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Foo", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

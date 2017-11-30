@@ -44,8 +44,9 @@ public class HistoryActivity extends AppCompatActivity {
         mDrawerList = (ListView) findViewById(R.id.navList);
 
         // Show the toggle for the Navigation drawer
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+/*        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        */
 
         // Get reference to the drawer layout and current activity
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
