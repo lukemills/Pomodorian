@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     static final int EDIT_TIMES = 1;
 
-    int duration = 1500000;
+    long work_duration = 1500000;
+    long break_duration = 300000;
 
     /* status is an integer signifying the status of the countdown timer. It can have one of the
        following six values:
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 toggle.setText(getString(R.string.stop_literal));
                 statusText.setText(getString(R.string.work_status));
                 // Initialize and start a countdown timer for the work period
-                workCountdown = new CountDownTimer(duration, 1000) {
+                workCountdown = new CountDownTimer(work_duration, 1000) {
                     //Perform an update to the timer TextView on each tick
                     public void onTick(long millisUntilFinished) {
                         timer.setText("" + String.format(FORMAT,
@@ -219,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                 status = 3;
                 toggle.setText(getString(R.string.stop_literal));
                 statusText.setText(getString(R.string.relax_status));
-                breakCountdown = new CountDownTimer(30000, 1000) {
+                breakCountdown = new CountDownTimer(break_duration, 1000) {
 
                     public void onTick(long millisUntilFinished) {
                         timer.setText("" + String.format(FORMAT,
@@ -381,11 +382,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        final TextView timer = (TextView) findViewById(R.id.timer_text_view);
         if(requestCode == EDIT_TIMES){
             if(resultCode == RESULT_OK){
-                Toast.makeText(MainActivity.this, "Returned from settings", Toast.LENGTH_SHORT).show();
+                Bundle extras = data.getExtras();
+                if(extras != null){
+                    if(extras.containsKey("newWorkTime")){
+                        work_duration = extras.getLong("newWorkTime");
+                        timer.setText("" + String.format(FORMAT,
+                                TimeUnit.MILLISECONDS.toMinutes(work_duration) - TimeUnit.HOURS.toMinutes(
+                                        TimeUnit.MILLISECONDS.toHours(work_duration)),
+                                TimeUnit.MILLISECONDS.toSeconds(work_duration) - TimeUnit.MINUTES.toSeconds(
+                                        TimeUnit.MILLISECONDS.toMinutes(work_duration))));
+                        Toast.makeText(MainActivity.this, "New work time" + work_duration, Toast.LENGTH_SHORT).show();
+                    }
+                    if(extras.containsKey("newBreakTime")){
+                        break_duration = extras.getLong("newBreakTime");
+                        Toast.makeText(MainActivity.this, "Break time changed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if(resultCode == RESULT_CANCELED){
+                Toast.makeText(MainActivity.this, "No changes made", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "Foo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Illegal state", Toast.LENGTH_SHORT).show();
             }
         }
     }
