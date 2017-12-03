@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class EditSession extends AppCompatActivity {
 
@@ -33,33 +32,21 @@ public class EditSession extends AppCompatActivity {
                 boolean workEdited = false;
                 boolean breakEdited = false;
 
-                /*
-                Toast.makeText(EditSession.this,
-                        "Work time set to " + workMinuteTextView.getText()
-                                + ":" + workSecondsTextView.getText()
-                                + "; break time set to " + breakMinuteTextView.getText()
-                                + ":" + breakSecondsTextView.getText()
-                        ,
-                        Toast.LENGTH_SHORT).show();
-                */
                 Intent returnIntent = new Intent();
                 if (!(workMinuteTextView.getText().toString().isEmpty())) {
                     workEdited = true;
                     edited = true;
                     workSeconds = Integer.parseInt(workMinuteTextView.getText().toString()) * 60;
-                    Toast.makeText(EditSession.this, "Work minutes: " + workSeconds, Toast.LENGTH_SHORT).show();
                 }
 
                 if (!(workSecondsTextView.getText().toString().isEmpty())) {
                     workEdited = true;
                     edited = true;
                     workSeconds += Integer.parseInt(workSecondsTextView.getText().toString());
-                    Toast.makeText(EditSession.this, "Work seconds: " + newWorkTime, Toast.LENGTH_SHORT).show();
                 }
 
                 if(workEdited){
                     newWorkTime = workSeconds * 1000;
-                    Toast.makeText(EditSession.this, "New work time" + newWorkTime, Toast.LENGTH_SHORT).show();
                     returnIntent.putExtra("newWorkTime", newWorkTime);
                 }
 

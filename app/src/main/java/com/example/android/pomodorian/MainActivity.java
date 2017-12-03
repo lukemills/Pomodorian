@@ -211,13 +211,6 @@ public class MainActivity extends AppCompatActivity {
                                         streakCounter
                                 );
                                 dbHelper.addSession(sesh);
-
-                                Toast.makeText(MainActivity.this,
-                                        "Session saved; streaks: " + Integer.toString(streakCounter) +
-                                                " date " + new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime())
-                                                + " time: "
-                                                + new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime())
-                                        , Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton(R.string.dont_save_literal, new DialogInterface.OnClickListener() {
@@ -289,8 +282,6 @@ public class MainActivity extends AppCompatActivity {
                                         streakCounter
                                 );
                                 dbHelper.addSession(sesh);
-
-                                Toast.makeText(MainActivity.this, "Session saved", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .setNegativeButton(R.string.dont_save_literal, new DialogInterface.OnClickListener() {
@@ -488,16 +479,12 @@ public class MainActivity extends AppCompatActivity {
                                     )
                             );
                         }
-                        Toast.makeText(MainActivity.this, "New work time" + work_duration, Toast.LENGTH_SHORT).show();
                     }
                     if (extras.containsKey("newBreakTime")) {
                         break_duration = extras.getLong("newBreakTime");
-                        Toast.makeText(MainActivity.this, "Break time changed", Toast.LENGTH_SHORT).show();
                     }
                 }
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(MainActivity.this, "No changes made", Toast.LENGTH_SHORT).show();
-            } else {
+            } else if (resultCode != RESULT_CANCELED) {
                 Toast.makeText(MainActivity.this, "Illegal state", Toast.LENGTH_SHORT).show();
             }
         }
