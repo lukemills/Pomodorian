@@ -24,9 +24,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.widget.Toolbar;
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     // The format to be used in the countdown timer
     private static final String FORMAT = "%02d:%02d";
+    private static final String FORMAT_2 = "%02d:%02d:%02d";
 
     /*
      * This method handles the logic for starting/stopping the timer as controlled by the button
@@ -156,11 +159,23 @@ public class MainActivity extends AppCompatActivity {
                 workCountdown = new CountDownTimer(work_duration, 1000) {
                     //Perform an update to the timer TextView on each tick
                     public void onTick(long millisUntilFinished) {
-                        timer.setText("" + String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                        if (millisUntilFinished > 3600000) {
+                            timer.setText("" + String.format(FORMAT_2,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                                    ),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+                                    )
+                            );
+                        } else {
+                            timer.setText("" + String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                        }
                     }
 
                     //When finished, update status and statusText accordingly and set statusText to let the
@@ -182,36 +197,36 @@ public class MainActivity extends AppCompatActivity {
                 finishTime = Calendar.getInstance().getTimeInMillis();
 
                 new AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.save_session))
-                    .setMessage("Would you like to save this session?")
-                    .setPositiveButton(R.string.save_literal, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Session sesh = new Session(
-                                    new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime()),
-                                    new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()),
-                                    (finishTime - startTime),
-                                    (25*streakCounter),
-                                    (5*streakCounter),
-                                    streakCounter
-                            );
-                            dbHelper.addSession(sesh);
+                        .setTitle(getString(R.string.save_session))
+                        .setMessage("Would you like to save this session?")
+                        .setPositiveButton(R.string.save_literal, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Session sesh = new Session(
+                                        new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime()),
+                                        new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()),
+                                        (finishTime - startTime),
+                                        (25 * streakCounter),
+                                        (5 * streakCounter),
+                                        streakCounter
+                                );
+                                dbHelper.addSession(sesh);
 
-                            Toast.makeText(MainActivity.this,
-                                    "Session saved; streaks: "+Integer.toString(streakCounter) +
-                                            " date " + new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime())
-                                    +" time: "
-                                    + new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime())
-                                    , Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton(R.string.dont_save_literal, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(MainActivity.this, "Session not saved", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .show();
+                                Toast.makeText(MainActivity.this,
+                                        "Session saved; streaks: " + Integer.toString(streakCounter) +
+                                                " date " + new SimpleDateFormat("MM/dd/yyyy").format(Calendar.getInstance().getTime())
+                                                + " time: "
+                                                + new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime())
+                                        , Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(R.string.dont_save_literal, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Toast.makeText(MainActivity.this, "Session not saved", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
                 workCountdown.cancel();
                 break;
             // When status == 2, the work session has ended and the app prompts for the user to confirm
@@ -223,11 +238,21 @@ public class MainActivity extends AppCompatActivity {
                 breakCountdown = new CountDownTimer(break_duration, 1000) {
 
                     public void onTick(long millisUntilFinished) {
-                        timer.setText("" + String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                                TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                        if (millisUntilFinished > 3600000) {
+                            timer.setText("" + String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                                    ))
+                            );
+                        } else {
+                            timer.setText("" + String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)))
+                            );
+                        }
                     }
 
                     // When the break timer is finished, the user will enter into another work period.
@@ -258,9 +283,9 @@ public class MainActivity extends AppCompatActivity {
                                 Session sesh = new Session(
                                         new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()),
                                         new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()),
-                                        (25*streakCounter+5*streakCounter),
-                                        (25*streakCounter),
-                                        (5*streakCounter),
+                                        (25 * streakCounter + 5 * streakCounter),
+                                        (25 * streakCounter),
+                                        (5 * streakCounter),
                                         streakCounter
                                 );
                                 dbHelper.addSession(sesh);
@@ -291,7 +316,37 @@ public class MainActivity extends AppCompatActivity {
                 streakCounter = 0;
                 streakCounterTextView.setText(Integer.toString(streakCounter));
                 statusText.setText(getString(R.string.work_status));
-                workCountdown.start();
+                workCountdown = new CountDownTimer(work_duration, 1000) {
+                    //Perform an update to the timer TextView on each tick
+                    public void onTick(long millisUntilFinished) {
+                        if (millisUntilFinished > 3600000) {
+                            timer.setText("" + String.format(FORMAT_2,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                                    ),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+                                    )
+                            );
+                        } else {
+                            timer.setText("" + String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                        }
+                    }
+
+                    //When finished, update status and statusText accordingly and set statusText to let the
+                    // user know it's break time
+                    public void onFinish() {
+                        timer.setText(getString(R.string.time_over));
+                        status = 2;
+                        statusText.setText(getString(R.string.break_status));
+                        toggle.setText(getString(R.string.start_literal));
+                    }
+                }.start();
                 break;
 
             // When status == 6, the user has paused the breakCountdown timer, and if the button is pressed,
@@ -304,7 +359,37 @@ public class MainActivity extends AppCompatActivity {
                 statusText.setText(getString(R.string.work_status));
                 streakCounter = 0;
                 streakCounterTextView.setText(Integer.toString(streakCounter));
-                workCountdown.start();
+                workCountdown = new CountDownTimer(work_duration, 1000) {
+                    //Perform an update to the timer TextView on each tick
+                    public void onTick(long millisUntilFinished) {
+                        if (millisUntilFinished > 3600000) {
+                            timer.setText("" + String.format(FORMAT_2,
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished)
+                                    ),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+                                    )
+                            );
+                        } else {
+                            timer.setText("" + String.format(FORMAT,
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                        }
+                    }
+
+                    //When finished, update status and statusText accordingly and set statusText to let the
+                    // user know it's break time
+                    public void onFinish() {
+                        timer.setText(getString(R.string.time_over));
+                        status = 2;
+                        statusText.setText(getString(R.string.break_status));
+                        toggle.setText(getString(R.string.start_literal));
+                    }
+                }.start();
                 break;
             default:
                 break;
@@ -350,16 +435,6 @@ public class MainActivity extends AppCompatActivity {
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     startActivity(historyIntent);
                 }
-                /*
-                if (position == 0 && (!parentList.equals(listNames.get(0)))) {
-                    // Open an intent to the first list
-                    Intent list1Intent = new Intent(MainActivity.this, classesArray[0]);
-                    new Utils().putListExtrasInIntentBundle(list1Intent, listNames);
-                    list1Intent.putExtra("parentList", listNames.get(0));
-                    mDrawerLayout.closeDrawer(GravityCompat.START);
-                    startActivity(list1Intent);
-                }
-                */
             }
         });
     }
@@ -381,27 +456,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         final TextView timer = (TextView) findViewById(R.id.timer_text_view);
-        if(requestCode == EDIT_TIMES){
-            if(resultCode == RESULT_OK){
+        if (requestCode == EDIT_TIMES) {
+            if (resultCode == RESULT_OK) {
                 Bundle extras = data.getExtras();
-                if(extras != null){
-                    if(extras.containsKey("newWorkTime")){
+                if (extras != null) {
+                    if (extras.containsKey("newWorkTime")) {
                         work_duration = extras.getLong("newWorkTime");
-                        timer.setText("" + String.format(FORMAT,
-                                TimeUnit.MILLISECONDS.toMinutes(work_duration) - TimeUnit.HOURS.toMinutes(
-                                        TimeUnit.MILLISECONDS.toHours(work_duration)),
-                                TimeUnit.MILLISECONDS.toSeconds(work_duration) - TimeUnit.MINUTES.toSeconds(
-                                        TimeUnit.MILLISECONDS.toMinutes(work_duration))));
+                        if (work_duration > 3600000) {
+                            timer.setText(
+                                    "" + String.format(FORMAT_2,
+                                            TimeUnit.MILLISECONDS.toHours(work_duration),
+                                            TimeUnit.MILLISECONDS.toMinutes(work_duration) - TimeUnit.HOURS.toMinutes(
+                                                    TimeUnit.MILLISECONDS.toHours(work_duration)
+                                            ),
+                                            TimeUnit.MILLISECONDS.toSeconds(work_duration) - TimeUnit.MINUTES.toSeconds(
+                                                    TimeUnit.MILLISECONDS.toMinutes(work_duration)
+                                            )
+                                    )
+                            );
+                        } else {
+                            timer.setText(
+                                    "" + String.format(FORMAT,
+                                            TimeUnit.MILLISECONDS.toMinutes(work_duration) - TimeUnit.HOURS.toMinutes(
+                                                    TimeUnit.MILLISECONDS.toHours(work_duration)
+                                            ),
+                                            TimeUnit.MILLISECONDS.toSeconds(work_duration) - TimeUnit.MINUTES.toSeconds(
+                                                    TimeUnit.MILLISECONDS.toMinutes(work_duration)
+                                            )
+                                    )
+                            );
+                        }
                         Toast.makeText(MainActivity.this, "New work time" + work_duration, Toast.LENGTH_SHORT).show();
                     }
-                    if(extras.containsKey("newBreakTime")){
+                    if (extras.containsKey("newBreakTime")) {
                         break_duration = extras.getLong("newBreakTime");
                         Toast.makeText(MainActivity.this, "Break time changed", Toast.LENGTH_SHORT).show();
                     }
                 }
-            } else if(resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(MainActivity.this, "No changes made", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(MainActivity.this, "Illegal state", Toast.LENGTH_SHORT).show();

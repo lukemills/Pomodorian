@@ -4,60 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorMainBackground"
     android:orientation="vertical"
     tools:context="com.example.android.pomodorian.EditSession">
 
     <TextView
-        android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
-        android:textStyle="bold"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="24dp"
         android:text="@string/edit"
         android:textAppearance="@android:color/primary_text_dark"
+        android:textColor="@color/colorPrimary"
         android:textSize="32sp"
-        android:layout_height="wrap_content" />
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/work_edit"
         android:layout_width="match_parent"
-        android:layout_marginTop="24dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_corner"
+        android:fadingEdgeLength="12dp"
+        android:orientation="vertical"
+        android:textAppearance="?android:attr/textAppearanceMedium">
 
         <TextView
             android:id="@+id/work_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="12dp"
             android:text="@string/edit_work"
             android:textAppearance="@android:color/primary_text_dark"
+            android:textColor="@color/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/minutes_linear_work"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="@string/initial_time">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Minutes"
                 android:textAppearance="@android:color/primary_text_dark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/edit_minutes_work"
                 android:layout_width="48sp"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/color_white"
                 android:inputType="number"
                 android:maxLength="3"
                 android:textAppearance="@android:color/primary_text_dark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
             <TextView
@@ -67,14 +82,17 @@
                 android:layout_marginStart="24dp"
                 android:text="@string/Seconds"
                 android:textAppearance="@android:color/primary_text_dark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/edit_seconds_work"
                 android:layout_width="48sp"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/color_white"
                 android:inputType="number"
                 android:maxLength="2"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
         </LinearLayout>
@@ -86,7 +104,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="48dp"
+        android:background="@drawable/rounded_corner"
+        android:fadingEdgeLength="12dp"
         android:orientation="vertical">
 
         <TextView
@@ -94,8 +118,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="12dp"
             android:text="@string/edit_break"
             android:textAppearance="@android:color/primary_text_dark"
+            android:textColor="@color/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -113,15 +139,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Minutes"
                 android:textAppearance="@android:color/primary_text_dark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/edit_minutes_break"
                 android:layout_width="48sp"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/color_white"
                 android:inputType="number"
                 android:maxLength="3"
                 android:textAppearance="@android:color/primary_text_dark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
             <TextView
@@ -131,14 +160,18 @@
                 android:layout_marginStart="24dp"
                 android:text="@string/Seconds"
                 android:textAppearance="@android:color/primary_text_dark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/edit_seconds_break"
                 android:layout_width="48sp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/color_white"
                 android:inputType="number"
                 android:maxLength="2"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp" />
 
 
@@ -152,5 +185,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
         android:text="@string/save_literal" />
 </LinearLayout>
